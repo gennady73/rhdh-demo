@@ -1,9 +1,11 @@
-apiVersion: backstage.io/v1beta1
-kind: System
+apiVersion: backstage.io/v1alpha1
+kind: Component
 metadata:
-  name: ${{ parameters.name | lower }} # Template variable for dynamic name
-  description: ${{ parameters.description }} # Template variable for dynamic description
+  name: 
   annotations:
-    backstage.io/techdocs-ref: url:https://github.com/gennady73/rhdh-demo/${{ parameters.name | lower }}
+    github.com/project-slug: gennady73/https://github.com/gennady73/rhdh-demo.git
+    backstage.io/techdocs-ref: dir:.
 spec:
-  owner: ${{ parameters.owner }} # Template variable for dynamic owner
+  type: service
+  lifecycle: experimental
+  owner: "group:default/rhdh-demo-team"
