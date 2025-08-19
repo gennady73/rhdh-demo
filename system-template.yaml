@@ -1,0 +1,53 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: my-system-template
+  title: Create a New System
+  description: Template for provisioning a new system
+spec:
+  owner: backstage/system-owners
+  type: system
+  parameters:
+    - title: System Details
+      required:
+        - systemName
+        - owner
+      properties:
+        systemName:
+          title: System Name
+          type: string
+          description: Unique name for the new system.
+        owner:
+          title: System Owner
+          type: string
+          ui:field: OwnerPicker
+          ui:options:
+            catalogFilter:
+              kind: Group
+    - title: Infrastructure Configuration
+      properties:
+        databaseType:
+          title: Database Type
+          type: string
+          enum: [PostgreSQL, MySQL, MongoDB]
+          default: PostgreSQL
+  steps:
+    - id: fetch-base
+      name: Fetch Base System Structure
+      action: fetch:template
+      input:
+        url: ./skeleton # Points to a directory with a base system structure
+        copyWithoutRender:
+          - .github/workflows/*
+    - id: provision-database
+      name: Provision Database
+      action: your-custom-provisioning-action # Example custom action
+      input:
+        type: ${{ parameters.databaseType }}
+        systemName: ${{ parameters.systemName }}
+    - id: register-system
+      name: Register System in Catalog
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps['fetch-base'].output.repoContentsUrl }}
+        catalogInfoPath: /catalog-info.yaml
