@@ -1,0 +1,9 @@
+apiVersion: backstage.io/v1beta1
+kind: System
+metadata:
+  name: ${{ parameters.name | lower }} # Template variable for dynamic name
+  description: ${{ parameters.description }} # Template variable for dynamic description
+  annotations:
+    backstage.io/techdocs-ref: url:https://github.com/gennady73/rhdh-demo/${{ parameters.name | lower }}
+spec:
+  owner: ${{ parameters.owner }} # Template variable for dynamic owner
